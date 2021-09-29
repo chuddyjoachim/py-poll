@@ -1,10 +1,13 @@
 import uvicorn
 
-from typing import Optional
 from fastapi import FastAPI
+from app.graphql import schema
+from app.config.db import db_session
+from app.auth import Auth_handler
 
 from starlette.graphql import GraphQLApp
 
+db = db_session.session_factory()
 app = FastAPI()
 
 
@@ -12,10 +15,7 @@ app = FastAPI()
 def read_root():
     return {"Hello": "World"}
 
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+app.add_route("/graphql", GraphQLApp(schema=schema))
 
 if __name__ == "__main__":
     # This runs uvicorn in a local development environment.
