@@ -6,14 +6,22 @@ name = "pypi"
 [packages]
 fastapi = "*"
 uvicorn = "*"
-graphene = "*"
+graphene = "==2.1.9"
 alembic = "*"
 sqlalchemy = "*"
 psycopg2-binary = "*"
-graphene-sqlalchemy = "*"
 python-dotenv = "*"
+pyjwt = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
+graphene-sqlalchemy = "==2.0"
+gunicorn = "*"
+graphene-federation = "*"
 
 [dev-packages]
+black = "*"
 
 [requires]
 python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true
