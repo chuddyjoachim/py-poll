@@ -6,7 +6,7 @@ from graphene_federation import build_schema
 
 from app.config.db import db_session
 
-from app.graphql.mutations.createuser import CreateNewUser
+from app.graphql.mutations.createuser import CreateUser
 from app.graphql.gqlmodel.user_model import UserModel
 
 db = db_session.session_factory()
@@ -26,7 +26,7 @@ class Query(ObjectType):
 
 
 class Mutation(graphene.ObjectType):
-    create_new_user = CreateNewUser.Field()
+    create_user = CreateUser.Field()
 
 
 schema = build_schema(query=Query, mutation=Mutation)

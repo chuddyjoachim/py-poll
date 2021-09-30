@@ -2,35 +2,36 @@ import graphene
 
 from app.models import User
 from app.schemas import Create_user_schema
-from app.graphql.gqlmodel.create_user_model import CreateUserModel
+from app.graphql.gqlmodel.user_model import UserModel
 from app.auth import Auth_handler
+from app.config.db import db_session
+
+db = db_session.session_factory()
 
 authHandler = Auth_handler()
 
-class CreateNewUser(graphene.Mutation):
-    class Argument:
+class CreateUser(graphene.Mutation):
+    class Arguments:
         email = graphene.String(required=True)
         username = graphene.String(required=True)
         password = graphene.String(required=True)
 
     ok = graphene.Boolean()
-    new_user = graphene.List(CreateUserModel)
+    newUser = graphene.List(UserModel)
 
     @staticmethod
     def mutate(root, info, email, username, password):
         # hash pwd
-        hashed_password = Auth_handler.get_hashed_password(password)
+        hashed_password = authHandler.get_hashed_password(password)
 
         # collect args
         user = Create_user_schema(email=email, username=username, password=hashed_password)
-        new_user = User(email=user.email, username=user.username, password=user.password)
+        newUser = User(email=user.email, username=user.username, password=user.password)
 
         # add to db
-        # db.add(new_user)
-        # db.commit()
-        # db.refresh(new_user)
+        db.add(newUser)
+        db.commit()
+        db.refresh(newUser)
+        ok = True
 
-        print(new_user.password)
-
-        return ok
-        pass
+        return CreateUser(ok=ok)

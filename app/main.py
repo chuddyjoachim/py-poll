@@ -2,12 +2,9 @@ import uvicorn
 
 from fastapi import FastAPI
 from app.graphql import schema
-from app.config.db import db_session
-from app.auth import Auth_handler
 
 from starlette.graphql import GraphQLApp
 
-db = db_session.session_factory()
 app = FastAPI()
 
 
